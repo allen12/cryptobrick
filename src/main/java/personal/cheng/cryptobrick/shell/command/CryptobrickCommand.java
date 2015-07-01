@@ -7,29 +7,29 @@ public interface CryptobrickCommand
 	 *
 	 * @return
 	 */
-	String getDescription();
+	public String getDescription();
 
 	/**
 	 * Specify the options/arguments for this task to query the user
 	 * 
 	 * @return
 	 */
-	Options getOptions();
+	public Options getOptions();
 
 	/**
 	 * Initialize the task with given parameters
 	 * 
 	 * @param opts
 	 */
-	void initialize(Options opts);
+	public void initialize(Options opts);
 
 	/**
 	 * Run the task
 	 */
-	void execute();
+	public void execute();
 
 	/**
 	 * Do any necessary cleanup afterwards
 	 */
-	void shutdown();
+	public void shutdown();
 }
