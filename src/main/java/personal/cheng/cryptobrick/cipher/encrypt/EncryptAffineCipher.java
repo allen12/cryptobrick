@@ -25,7 +25,7 @@ import personal.cheng.cryptobrick.util.CryptobrickException;
  * </p>
  *
  * <p>
- * For example, if a = 3 and b = 5
+ * For example, if a = 3 and b = 5, then A --> H, B --> K, C --> N, ...
  * </p>
  * 
  * @author Cheng, Allen
