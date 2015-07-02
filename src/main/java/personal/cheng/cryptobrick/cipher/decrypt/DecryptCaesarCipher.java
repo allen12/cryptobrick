@@ -1,8 +1,16 @@
 package personal.cheng.cryptobrick.cipher.decrypt;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 
 import personal.cheng.cryptobrick.cipher.encrypt.EncryptCaesarCipher;
+import personal.cheng.cryptobrick.util.CryptobrickException;
+import personal.cheng.cryptobrick.util.CryptobrickIO;
 
 /**
  * <p>
@@ -36,11 +44,59 @@ public class DecryptCaesarCipher
 			log.fatal("Usage: java DecryptCaesarCipher <input.txt> <output.txt> <key>");
 			return;
 		}
-
-		int key = Integer.valueOf(args[2]);
-		key %= 26;
-		key = 26 - key;
 		
-		EncryptCaesarCipher.run(args[0], args[1], key, false);
+		DecryptCaesarCipher.run(args[0], args[1], Integer.valueOf(args[2]));
+	}
+	
+	public static void run(String pathToInputFile, String pathToOutputFile, int key)
+	{
+		try 
+		{
+			key %= 26;
+			key = 26 - key;
+
+			BufferedWriter writer = new BufferedWriter(new FileWriter(new File(pathToOutputFile)));
+			
+			List<String> allLines = CryptobrickIO.readFile(pathToInputFile);
+			
+			for (int i = 0; i < allLines.size() - 1; i++)
+			{
+				writer.write(processLine(allLines.get(i), key));
+				writer.newLine();
+			}
+			writer.write(processLine(allLines.get(allLines.size()-1), key));
+			
+			writer.flush();
+			writer.close();
+			
+		} catch (IOException e) 
+		{
+			throw new CryptobrickException(e);
+		}
+	}
+	
+	private static String processLine(String in, int key)
+	{
+		String out = "";
+		
+		in = in.toLowerCase();
+		
+		char[] characters = in.toCharArray();
+		for (char c : characters)
+		{
+			char newChar = c;
+			
+			if (newChar >= 'a' && newChar <= 'z')
+			{
+				newChar += key;
+				
+				if (newChar > 'z')
+					newChar -= 26;
+			}
+			
+			out += newChar;
+		}
+		
+		return out;
 	}
 }

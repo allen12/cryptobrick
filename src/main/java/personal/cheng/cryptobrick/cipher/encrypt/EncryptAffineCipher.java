@@ -1,15 +1,15 @@
 package personal.cheng.cryptobrick.cipher.encrypt;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import personal.cheng.cryptobrick.util.CryptobrickException;
+import personal.cheng.cryptobrick.util.CryptobrickIO;
 
 /**
  * <p>
@@ -41,12 +41,7 @@ public class EncryptAffineCipher
 			log.fatal("Usage: java EncryptAffineCipher <input.txt> <output.txt> <a> <b> <opt: remove spaces>");
 			return;
 		}
-		
-		// Numbers not coprime with 26 are either even or divisible by 13
-		if (Integer.valueOf(args[2]) % 2 == 0 || Integer.valueOf(args[2]) % 13 == 0)
-			log.warn("WARNING: The value of 'a' in the affine cipher is not coprime with 26. "
-					+ "The resulting message may be impossible to decrypt!");
-		
+			
 		boolean removeSpaces = false;
 		
 		if (args.length > 4 && Boolean.valueOf(args[4]));
@@ -59,19 +54,24 @@ public class EncryptAffineCipher
 	{
 		try 
 		{
-			b %= 26;
+			// Numbers not coprime with 26 are either even or divisible by 13
+			if (Integer.valueOf(a) % 2 == 0 || Integer.valueOf(a) % 13 == 0)
+				log.warn("WARNING: The value of 'a' in the affine cipher is not coprime with 26. "
+						+ "The resulting message may be impossible to decrypt!");
 			
-			BufferedReader reader = new BufferedReader(new FileReader(new File(pathToInputFile)));
+			b %= 26;
+
 			BufferedWriter writer = new BufferedWriter(new FileWriter(new File(pathToOutputFile)));
 			
-			while (reader.ready())
+			List<String> allLines = CryptobrickIO.readFile(pathToInputFile);
+			
+			for (int i = 0; i < allLines.size() - 1; i++)
 			{
-				String line = reader.readLine();
-				writer.write(processLine(line, a, b, removeSpaces));
+				writer.write(processLine(allLines.get(i), a, b, removeSpaces));
 				writer.newLine();
 			}
+			writer.write(processLine(allLines.get(allLines.size()-1), a, b, removeSpaces));
 			
-			reader.close();
 			writer.flush();
 			writer.close();
 			
@@ -98,11 +98,15 @@ public class EncryptAffineCipher
 			
 			if (newChar >= 'A' && newChar <= 'Z')
 			{
+				newChar -= 'A'-1;
+				
 				newChar *= a;
 				newChar += b;
 				
-				while (newChar > 'Z')
-					newChar -= 26;
+				newChar %= 26;
+				if (newChar == 0) newChar = 26;
+				
+				newChar += 'A'-1;
 			}
 			
 			out += newChar;

@@ -1,15 +1,15 @@
 package personal.cheng.cryptobrick.cipher.encrypt;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import personal.cheng.cryptobrick.util.CryptobrickException;
+import personal.cheng.cryptobrick.util.CryptobrickIO;
 
 /**
  * <p>
@@ -53,18 +53,18 @@ public class EncryptCaesarCipher
 		try 
 		{
 			key %= 26;
-			
-			BufferedReader reader = new BufferedReader(new FileReader(new File(pathToInputFile)));
+
 			BufferedWriter writer = new BufferedWriter(new FileWriter(new File(pathToOutputFile)));
 			
-			while (reader.ready())
+			List<String> allLines = CryptobrickIO.readFile(pathToInputFile);
+			
+			for (int i = 0; i < allLines.size() - 1; i++)
 			{
-				String line = reader.readLine();
-				writer.write(processLine(line, key, removeSpaces));
+				writer.write(processLine(allLines.get(i), key, removeSpaces));
 				writer.newLine();
 			}
+			writer.write(processLine(allLines.get(allLines.size()-1), key, removeSpaces));
 			
-			reader.close();
 			writer.flush();
 			writer.close();
 			
