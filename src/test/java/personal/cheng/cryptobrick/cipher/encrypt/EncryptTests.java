@@ -7,6 +7,7 @@ import org.junit.Test;
 import personal.cheng.cryptobrick.TestUtils;
 import personal.cheng.cryptobrick.cipher.monoalphabetic.encrypt.EncryptAffineCipher;
 import personal.cheng.cryptobrick.cipher.monoalphabetic.encrypt.EncryptCaesarCipher;
+import personal.cheng.cryptobrick.cipher.monoalphabetic.encrypt.EncryptKeywordCipher;
 
 /**
  * Tests the encryption ciphers.
@@ -46,5 +47,15 @@ public class EncryptTests
 		assertTrue( TestUtils.sameFile(PATH_TO_OUTPUT_FILE, PATH_TO_EXPECTED_FILE) );
 	}
 	
+	@Test
+	public void testKeywordCipher()
+	{
+		final String PATH_TO_OUTPUT_FILE = "test/cipher/encrypt/Keyword_actual.txt";
+		final String PATH_TO_EXPECTED_FILE = "test/cipher/encrypt/Keyword_expected.txt";
+		
+		EncryptKeywordCipher.run(PATH_TO_INPUT_FILE, PATH_TO_OUTPUT_FILE, "FOOBARBAZ", "W", true);
+		
+		assertTrue( TestUtils.sameFile(PATH_TO_OUTPUT_FILE, PATH_TO_EXPECTED_FILE) );
+	}
 
 }
