@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
 
 /**
  * General utility tools for unit tests
@@ -22,8 +21,7 @@ public class TestUtils
 	 */
 	public static boolean sameFile(File a, File b)
 	{
-		try 
-		(
+		try (
 				BufferedReader readerA = new BufferedReader(new FileReader(a)); 
 				BufferedReader readerB = new BufferedReader(new FileReader(b));  )
 		{
@@ -33,9 +31,7 @@ public class TestUtils
 				String two = readerB.readLine();
 				
 				if (one.equals(two) == false)
-				{
 					return false;
-				}
 			}
 
 			return true;

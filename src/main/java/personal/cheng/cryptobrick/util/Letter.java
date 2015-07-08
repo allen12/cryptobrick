@@ -8,6 +8,11 @@ import java.util.List;
  * A representation of an ASCII character, not limited to just alphanumeric
  * characters as the name suggests.
  * 
+ * <p>
+ * This class also contains general utility functions related to character
+ * manipulation with regards to cryptography.
+ * </p>
+ * 
  * @author Cheng, Allen
  */
 public class Letter implements Comparable<Letter>
@@ -156,11 +161,49 @@ public class Letter implements Comparable<Letter>
 		
 		for (char c = 'A'; c <= 'Z'; c++)
 		{
-			list.add( new Letter(c, Letter.getFrequencyOfLetter(c)) );
+			list.add( new Letter(c, getFrequencyOfLetter(c)) );
 		}
 		
 		Collections.sort(list);
 		
 		return list;
+	}
+	
+	/**
+	 * Returns the character position of the letter within the standard
+	 * 26-letter English alphabet, using A = 1, B = 2, C = 3, ..., Z = 26
+	 * 
+	 * @param letter
+	 * @throws IllegalArgumentException if the letter is not a lowercase
+	 * or uppercase a-z
+	 */
+	public static int getCharacterPosition(char letter)
+	{
+		if ( (letter >= 'a' && letter <= 'z') == false && (letter >= 'A' && letter <= 'Z') == false)
+			throw new IllegalArgumentException("argument is not a letter!");
+		
+		if (letter >= 'a')
+			return letter - 'a' + 1;
+		else
+			return letter - 'A' + 1;
+	}
+	
+	/**
+	 * Returns the character associated with the position argument in the
+	 * English alphabet, using A = 1, B = 2, C = 3, ..., Z = 26
+	 * 
+	 * @param pos the position of the letter in the alphabet
+	 * @param lowercase whether to return a lowercase or uppercase character
+	 * @throws IllegalArgumentException if the position is not between 1 and 26, inclusive
+	 */
+	public static char getCharacterFromPosition(int pos, boolean lowercase)
+	{
+		if (pos <= 0 || pos > 26)
+			throw new IllegalArgumentException("argument must be between 1 and 26!");
+		
+		if (lowercase == true)
+			return (char)(pos + 'a' - 1);
+		else
+			return (char)(pos + 'A' - 1);
 	}
 }

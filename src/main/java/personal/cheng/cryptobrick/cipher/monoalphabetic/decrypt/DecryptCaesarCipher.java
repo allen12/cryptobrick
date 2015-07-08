@@ -1,4 +1,4 @@
-package personal.cheng.cryptobrick.cipher.decrypt;
+package personal.cheng.cryptobrick.cipher.monoalphabetic.decrypt;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import personal.cheng.cryptobrick.cipher.encrypt.EncryptCaesarCipher;
 import personal.cheng.cryptobrick.util.CryptobrickException;
 import personal.cheng.cryptobrick.util.CryptobrickIO;
 
@@ -64,6 +63,7 @@ public class DecryptCaesarCipher
 				writer.write(processLine(allLines.get(i), key));
 				writer.newLine();
 			}
+			
 			writer.write(processLine(allLines.get(allLines.size()-1), key));
 			
 			writer.flush();

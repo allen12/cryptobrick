@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import personal.cheng.cryptobrick.TestUtils;
+import personal.cheng.cryptobrick.cipher.monoalphabetic.encrypt.EncryptAffineCipher;
+import personal.cheng.cryptobrick.cipher.monoalphabetic.encrypt.EncryptCaesarCipher;
 
 /**
  * Tests the encryption ciphers.

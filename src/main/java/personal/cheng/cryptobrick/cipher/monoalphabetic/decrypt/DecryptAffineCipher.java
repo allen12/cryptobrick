@@ -1,4 +1,4 @@
-package personal.cheng.cryptobrick.cipher.decrypt;
+package personal.cheng.cryptobrick.cipher.monoalphabetic.decrypt;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 
 import personal.cheng.cryptobrick.util.CryptobrickException;
 import personal.cheng.cryptobrick.util.CryptobrickIO;
+import personal.cheng.cryptobrick.util.Letter;
 
 /**
  * <p>
@@ -107,20 +108,18 @@ public class DecryptAffineCipher
 			
 			if (newChar >= 'a' && newChar <= 'z')
 			{
-				System.out.print(newChar);
-				newChar -= 'a'-1;
-				newChar -= b;
+				int pos = Letter.getCharacterPosition(newChar);
 				
-				if (newChar <= 0)
-					newChar += 26;
+				pos -= b;
+				if (pos <= 0)
+					pos += 26;
 				
-				newChar *= x;
+				pos *= x;
 				
-				newChar %= 26;
-				if (newChar == 0) newChar = 26;
+				pos %= 26;
+				if (pos == 0) pos = 26;
 				
-				newChar += 'a'-1;
-				System.out.println(" to " + newChar);
+				newChar = Letter.getCharacterFromPosition(pos, true);
 			}
 			
 			out += newChar;

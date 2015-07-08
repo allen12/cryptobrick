@@ -1,4 +1,4 @@
-package personal.cheng.cryptobrick.cipher.encrypt;
+package personal.cheng.cryptobrick.cipher.monoalphabetic.encrypt;
 
 import java.io.BufferedWriter;
 import java.io.File;
