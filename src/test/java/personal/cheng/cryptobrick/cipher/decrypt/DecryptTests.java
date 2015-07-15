@@ -7,6 +7,7 @@ import org.junit.Test;
 import personal.cheng.cryptobrick.TestUtils;
 import personal.cheng.cryptobrick.cipher.monoalphabetic.decrypt.DecryptAffineCipher;
 import personal.cheng.cryptobrick.cipher.monoalphabetic.decrypt.DecryptCaesarCipher;
+import personal.cheng.cryptobrick.cipher.monoalphabetic.decrypt.DecryptKeywordCipher;
 
 /**
  * Tests the decryption ciphers.
@@ -40,6 +41,17 @@ public class DecryptTests
 		final String PATH_TO_OUTPUT_FILE = "test/cipher/decrypt/Affine_actual.txt";
 		
 		DecryptAffineCipher.run(PATH_TO_INPUT_FILE, PATH_TO_OUTPUT_FILE, 19, 3);
+		
+		assertTrue( TestUtils.sameFile(PATH_TO_OUTPUT_FILE, PATH_TO_EXPECTED_FILE) );
+	}
+	
+	@Test
+	public void testKeywordCipher()
+	{
+		final String PATH_TO_INPUT_FILE = "test/cipher/decrypt/Keyword_input.txt";
+		final String PATH_TO_OUTPUT_FILE = "test/cipher/decrypt/Keyword_actual.txt";
+		
+		DecryptKeywordCipher.run(PATH_TO_INPUT_FILE, PATH_TO_OUTPUT_FILE, "FOOBARBAZ", "W");
 		
 		assertTrue( TestUtils.sameFile(PATH_TO_OUTPUT_FILE, PATH_TO_EXPECTED_FILE) );
 	}

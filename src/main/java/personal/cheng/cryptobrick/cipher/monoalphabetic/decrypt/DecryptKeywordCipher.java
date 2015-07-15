@@ -1,4 +1,4 @@
-package personal.cheng.cryptobrick.cipher.monoalphabetic.encrypt;
+package personal.cheng.cryptobrick.cipher.monoalphabetic.decrypt;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -10,8 +10,10 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import personal.cheng.cryptobrick.cipher.monoalphabetic.encrypt.EncryptKeywordCipher;
 import personal.cheng.cryptobrick.util.CryptobrickException;
 import personal.cheng.cryptobrick.util.CryptobrickIO;
+import personal.cheng.cryptobrick.util.Letter;
 import personal.cheng.cryptobrick.util.Letters;
 
 /**
@@ -44,44 +46,40 @@ import personal.cheng.cryptobrick.util.Letters;
  * 
  * @author Cheng, Allen
  */
-public class EncryptKeywordCipher 
+public class DecryptKeywordCipher 
 {
-	private static final Logger log = Logger.getLogger(EncryptKeywordCipher.class);
+	private static final Logger log = Logger.getLogger(DecryptKeywordCipher.class);
 	
 	public static void main(String[] args) 
 	{
 		if (args.length < 4)
 		{
-			log.fatal("Usage: java EncryptKeywordCipher <input.txt> <output.txt> <keyword> <keyletter> <opt: remove spaces>");
+			log.fatal("Usage: java DecryptKeywordCipher <input.txt> <output.txt> <keyword> <keyletter>");
 			return;
 		}
 		
-		boolean removeSpaces = false;
-		
-		if (args.length > 4 && Boolean.valueOf(args[4]));
-			removeSpaces = true;
-		
-		run(args[0], args[1], args[2], args[3], removeSpaces);
+		DecryptKeywordCipher.run(args[0], args[1], args[2], args[3]);
 	}
 	
-	public static void run(String pathToInputFile, String pathToOutputFile, String keyword, String keyletter, boolean removeSpaces)
+	public static void run(String pathToInputFile, String pathToOutputFile, String keyword, String keyletter)
 	{
 		try 
 		{
-			keyletter = keyletter.toUpperCase();
+			keyletter = keyletter.toLowerCase();
 			String keywordNoDuplicates = Letters.removeDuplicates(keyword);
 			Map<Character, Character> mappings = getAlphabetMappings(keywordNoDuplicates, keyletter);
-
+			
 			BufferedWriter writer = new BufferedWriter(new FileWriter(new File(pathToOutputFile)));
 			
 			List<String> allLines = CryptobrickIO.readFile(pathToInputFile);
 			
 			for (int i = 0; i < allLines.size() - 1; i++)
 			{
-				writer.write(processLine(allLines.get(i), mappings, removeSpaces));
+				writer.write(processLine(allLines.get(i), mappings));
 				writer.newLine();
 			}
-			writer.write(processLine(allLines.get(allLines.size()-1), mappings, removeSpaces));
+			
+			writer.write(processLine(allLines.get(allLines.size()-1), mappings));
 			
 			writer.flush();
 			writer.close();
@@ -92,22 +90,18 @@ public class EncryptKeywordCipher
 		}
 	}
 	
-	private static String processLine(String in, Map<Character, Character> mappings, boolean removeSpaces)
+	private static String processLine(String in, Map<Character, Character> mappings)
 	{
 		String out = "";
 		
-		in = in.toUpperCase();
+		in = in.toLowerCase();
 		
 		char[] characters = in.toCharArray();
 		for (char c : characters)
 		{
-			// If removeSpaces option is true and character is a space, skip
-			if (removeSpaces == true && c == ' ')
-				continue;
-			
 			char newChar = c;
 			
-			if (newChar >= 'A' && newChar <= 'Z')
+			if (newChar >= 'a' && newChar <= 'z')
 			{
 				newChar = mappings.get(newChar);
 			}
@@ -118,33 +112,19 @@ public class EncryptKeywordCipher
 		return out;
 	}
 	
-	// Keys are plaintext letters, values are ciphertext letters
-	public static Map<Character, Character> getAlphabetMappings(String keywordNoDup, String keyLetter)
+	// Keys are ciphertext letters, values are plaintext letters
+	private static Map<Character, Character> getAlphabetMappings(String keywordNoDup, String keyLetter)
 	{
-		Map<Character, Character> map = new HashMap<>();
-		char plainChar = keyLetter.charAt(0);
+		keyLetter = keyLetter.toUpperCase();
 		
-		// keyword insertion
-		for (char cipherChar : keywordNoDup.toCharArray())
+		Map<Character, Character> map = EncryptKeywordCipher.getAlphabetMappings(keywordNoDup, keyLetter);
+		Map<Character, Character> retMap = new HashMap<>();
+		
+		for (Map.Entry<Character, Character> entry : map.entrySet())
 		{
-			map.put(plainChar, cipherChar);
-			plainChar++;
-			if (plainChar > 'Z')
-				plainChar = 'A';
+			retMap.put(Letter.convert(entry.getValue()), Letter.convert(entry.getKey()));
 		}
 		
-		// rest of the alphabet
-		for (char c = 'A'; c <= 'Z'; c++)
-		{
-			if (keywordNoDup.contains(Character.toString(c)))
-				continue;
-			
-			map.put(plainChar, c);
-			plainChar++;
-			if (plainChar > 'Z')
-				plainChar = 'A';
-		}
-		
-		return map;
+		return retMap;
 	}
 }

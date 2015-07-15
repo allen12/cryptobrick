@@ -206,4 +206,22 @@ public class Letter implements Comparable<Letter>
 		else
 			return (char)(pos + 'A' - 1);
 	}
+	
+	/**
+	 * Returns the uppercase/lowercase equivalent of the input char.
+	 * 
+	 * @param letter
+	 * @return
+	 */
+	public static char convert(char letter)
+	{
+		if ((letter >= 'a' && letter <= 'z') == false && (letter >= 'A' && letter <= 'Z') == false)
+			throw new IllegalArgumentException("Letter must be an alpha character");
+		
+		if (letter >= 'a' && letter <= 'z')
+			return (char)(letter - 32);
+		else
+			return (char)(letter + 32);
+	}
+	
 }
