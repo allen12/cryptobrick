@@ -77,7 +77,7 @@ public class Letter implements Comparable<Letter>
 		
 		Letter o = (Letter)other;
 		
-		if (frequency != null && o.getFrequency() != null && Math.abs(frequency - o.getFrequency()) < 1e-6)
+		if (frequency != null && o.getFrequency() != null && Math.abs(frequency - o.getFrequency()) > 1e-6)
 			return false;
 		
 		if (letter != o.getLetter())
@@ -90,8 +90,8 @@ public class Letter implements Comparable<Letter>
 	{
 		if (frequency != null && o.getFrequency() != null)
 			return frequency.compareTo(o.getFrequency());
-		
-		return letter.compareTo(o.getLetter());
+		else
+			return letter.compareTo(o.getLetter());
 	}
 	
 	/**
