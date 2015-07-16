@@ -1,6 +1,6 @@
 package personal.cheng.cryptobrick.cipher.encrypt;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -8,6 +8,7 @@ import personal.cheng.cryptobrick.TestUtils;
 import personal.cheng.cryptobrick.cipher.monoalphabetic.encrypt.EncryptAffineCipher;
 import personal.cheng.cryptobrick.cipher.monoalphabetic.encrypt.EncryptCaesarCipher;
 import personal.cheng.cryptobrick.cipher.monoalphabetic.encrypt.EncryptKeywordCipher;
+import personal.cheng.cryptobrick.cipher.polyalphabetic.encrypt.EncryptVigenereCipher;
 
 /**
  * Tests the encryption ciphers.
@@ -54,6 +55,17 @@ public class EncryptTests
 		final String PATH_TO_EXPECTED_FILE = "test/cipher/encrypt/Keyword_expected.txt";
 		
 		EncryptKeywordCipher.run(PATH_TO_INPUT_FILE, PATH_TO_OUTPUT_FILE, "FOOBARBAZ", "W", true);
+		
+		assertTrue( TestUtils.sameFile(PATH_TO_OUTPUT_FILE, PATH_TO_EXPECTED_FILE) );
+	}
+	
+	@Test
+	public void testVigenereCipher()
+	{
+		final String PATH_TO_OUTPUT_FILE = "test/cipher/encrypt/Vigenere_actual.txt";
+		final String PATH_TO_EXPECTED_FILE = "test/cipher/encrypt/Vigenere_expected.txt";
+		
+		EncryptVigenereCipher.run(PATH_TO_INPUT_FILE, PATH_TO_OUTPUT_FILE, "WACK", false);
 		
 		assertTrue( TestUtils.sameFile(PATH_TO_OUTPUT_FILE, PATH_TO_EXPECTED_FILE) );
 	}
