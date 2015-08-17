@@ -50,6 +50,9 @@ import personal.cheng.cryptobrick.util.CryptobrickIO;
  * 	<br>  Ciphrtext: DBMCSMDI
  * </code>
  * 
+ * <p>
+ * Code adapted from: http://stackoverflow.com/questions/11347211/where-can-i-find-the-java-source-code-for-the-vigenere-cipher
+ * 
  * 
  * @author chenga1
  */
